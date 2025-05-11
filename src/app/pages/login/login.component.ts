@@ -8,7 +8,7 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-login',
   imports: [CommonModule, FormsModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrl: './login.component.css',
 })
 export class LoginComponent implements OnInit {
   email: string = '';
@@ -18,18 +18,38 @@ export class LoginComponent implements OnInit {
   constructor(private userService: UserService, private router: Router) {}
 
   user() {
-    if (this.userService.validarUsuario(this.email, this.password)) {
-      this.router.navigate(['/native']); // Redirige a Native
-    } else {
-      this.errorMessage = 'Credenciales inválidas. Intenta nuevamente.';
+    console.log('Intentando redirigir a /native...');
+    console.log('Valores ingresados:', this.email, this.password); // Verifica los datos antes de validar
+    if (!this.email || !this.password) {
+      this.errorMessage = 'Por favor, ingresa un correo y una contraseña';
+      return; // Detiene la ejecución si los valores están vacíos
     }
+
+    this.userService.validateUser(this.email, this.password).subscribe(
+      (isValid) => {
+        console.log('Resultado de validación:', isValid);
+        if (isValid) {
+          this.router.navigate(['/native']);
+        } else {
+          this.errorMessage = 'Credenciales inválidas. Intenta nuevamente.';
+        }
+      },
+      (error) => {
+        console.error('Error al validar el usuario:', error);
+        this.errorMessage = 'Ocurrió un error al validar el usuario.';
+      }
+    );
   }
 
   ngOnInit() {
-    document.querySelector(".toggle-password")?.addEventListener("click", function () {
-      const passwordField = document.querySelector("#password-field") as HTMLInputElement;
-      passwordField.type = passwordField.type === "password" ? "text" : "password";
-    });
+    document
+      .querySelector('.toggle-password')
+      ?.addEventListener('click', function () {
+        const passwordField = document.querySelector(
+          '#password-field'
+        ) as HTMLInputElement;
+        passwordField.type =
+          passwordField.type === 'password' ? 'text' : 'password';
+      });
   }
 }
-

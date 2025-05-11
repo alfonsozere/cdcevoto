@@ -1,1 +1,35 @@
-<p>native works!</p>
+<div class="container mt-4">
+  <h2 class="text-center text-light fw-bold">Listado de Electores</h2>
+  <p class="text-center text-light ">Sector educativo.</p>
+
+  <div class="table-wrapper">
+    <table class="table table-hover table-bordered shadow-sm">
+      <thead class="table-dark text-white">
+        <tr class="text-center">
+          <!-- <th>Lista</th> -->
+          <th>Cédula</th>
+          <th>Votante</th>
+          <!-- <th>Centro</th>
+          <th>Plantel</th>
+          <th>Personal</th> -->
+          <th>Votó</th>
+          <th>Pendiente</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let elector of electores$ | async" class="text-center">
+          <!-- <td>{{ elector.lista }}</td> -->
+          <td>{{ elector.cedula }}</td>
+          <td>{{ elector.votante }}</td>
+          <!-- <td>{{ elector.centro }}</td>
+          <td>{{ elector.plantel }}</td>
+          <td>{{ elector.personal }}</td> -->
+          <td></td>
+          <td>Pendiente</td>
+          <td><button type="button" class="btn btn-success">Votó!</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

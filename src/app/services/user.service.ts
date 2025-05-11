@@ -1,25 +1,38 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, map, Observable, of } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
+  constructor(private http: HttpClient) {}
 
-  constructor( private http: HttpClient ) { }
-
-  getUsers(): Observable<any> {
-    return this.http.get('assets/data/usuarios.json');
-  }
-  
-  private usuarios = [
-    { email: "usuario1@example.com", password: "clave123" },
-    { email: "admin@example.com", password: "admin2025" }
-  ];
-
-  validarUsuario(email: string, password: string): boolean {
-    return this.usuarios.some(user => user.email === email && user.password === password);
+  getUsers(): Observable<any[]> {
+    return this.http.get<any[]>('assets/datos/users.json').pipe(
+      catchError((error) => {
+        console.error('Error loading usuarios.json:', error);
+        return of([]); // Retorna un array vacío en caso de error
+      })
+    );
   }
 
+  validateUser(email: string, password: string): Observable<boolean> {
+    return this.getUsers().pipe(
+      map((users) => {
+        console.log('Usuarios obtenidos:', users);
+
+        return users.some((user) => {
+          console.log(
+            `Comparando: ${user.email} === ${email} && ${user.password} === ${password}`
+          );
+          return user.email === email && user.password === password;
+        });
+      }),
+      catchError((error) => {
+        console.error('Error fetching users:', error);
+        return of(false);
+      })
+    );
+  }
 }

@@ -1,0 +1,8 @@
+.container {
+  margin-top: 80px; /* Ajusta según la altura del header */
+}
+
+.table-wrapper {
+  max-height: 60vh; /* 60% de la altura de la ventana */
+  overflow-y: auto; /* Activa el scroll si hay muchos datos */
+}
