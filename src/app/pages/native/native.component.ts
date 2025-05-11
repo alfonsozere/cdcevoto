@@ -1,9 +1,15 @@
 import { Component } from '@angular/core';
-import { Firestore, collection, collectionData, doc, updateDoc, } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import {
+  Firestore,
+  collection,
+  collectionData,
+  doc,
+  updateDoc,
+} from '@angular/fire/firestore';
+import { map, Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { getAuth } from 'firebase/auth';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { Router } from '@angular/router';
 
 @Component({
@@ -23,19 +29,20 @@ export class NativeComponent {
   }
 
   registrarVoto(cedula: string) {
-    const auth = getAuth();
-    const user = auth.currentUser;
-
-    if (!user) {
-      console.error('⚠️ No hay usuario autenticado. Bloqueando actualización.');
-      this.router.navigate(['/login']); // 🔥 Redirigir al login si no hay sesión activa
-      return;
-    }
-
     const electorDoc = doc(this.firestore, `electores/${cedula}`);
+    updateDoc(electorDoc, { voto: 'Votó' }) // 🔥 Actualiza Firestore
+      .then(() => {
+        console.log(`✅ Voto registrado para ${cedula}`);
 
-    updateDoc(electorDoc, { voto: 'Votó' })
-      .then(() => console.log(`✅ Voto registrado para ${cedula}`))
-      .catch((error) => console.error('⚠️ Error al registrar el voto:', error));
+        // 🔥 Actualiza el estado visual en la tabla sin esperar la recarga
+        this.electores$ = this.electores$.pipe(
+          map((electores) =>
+            electores.map((e) =>
+              e.cedula === cedula ? { ...e, voto: 'Votó' } : e
+            )
+          )
+        );
+      })
+      .catch((error) => console.error('Error al registrar el voto:', error));
   }
 }

@@ -17,9 +17,9 @@
         <tr *ngFor="let elector of electores$ | async" class="text-center">
           <td class="col-cedula">{{ elector.cedula }}</td>
           <td class="col-votante">{{ elector.votante }}</td>
-          <td class="col-voto"></td>
+          <td class="col-voto">{{ elector.voto }}</td>
           <td class="col-pendiente">Pendiente</td>
-          <td class="col-accion btn-container"><button type="button" class="btn btn-success" (click)="registrarVoto(elector.cedula)">Votó!</button></td>
+          <td class="col-accion btn-container"><button type="button" class="btn btn-success" (click)="registrarVoto(elector.cedula)" [disabled]="elector.voto === 'Votó'">Votó!</button></td>
         </tr>
       </tbody>
     </table>

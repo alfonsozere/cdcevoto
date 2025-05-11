@@ -1,11 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router'; // Asegúrate de importar Router
-import {
-  browserLocalPersistence,
-  getAuth,
-  setPersistence,
-  signInWithEmailAndPassword,
-} from 'firebase/auth';
+import { browserLocalPersistence, getAuth, setPersistence, signInWithEmailAndPassword, } from 'firebase/auth';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +9,7 @@ export class AuthService {
   constructor(private router: Router) {
     const auth = getAuth();
 
-    setPersistence(auth, browserLocalPersistence) // 🔥 Mantiene la sesión activa incluso al recargar
+    setPersistence(auth, browserLocalPersistence) // 🔥 Mantiene la sesión activa al recargar o cambiar de vista
       .then(() => console.log('✅ Sesión persistente activada'))
       .catch((error) =>
         console.error('⚠️ Error al establecer persistencia:', error)
