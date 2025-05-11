@@ -6,3 +6,26 @@
   max-height: 60vh; /* 60% de la altura de la ventana */
   overflow-y: auto; /* Activa el scroll si hay muchos datos */
 }
+
+.btn-centered {
+  display: flex;
+  justify-content: center; /* 🔥 Centra horizontalmente */
+  align-items: center; /* 🔥 Centra verticalmente */
+  width: 100%; /* 🔹 Asegura que ocupe el espacio completo dentro del td */
+}
+
+.btn-container {
+  display: table-cell; /* 🔥 Mantiene la apariencia de la celda sin alterar su estructura */
+  text-align: center; /* 🔹 Centra el botón horizontalmente */
+  vertical-align: middle; /* 🔹 Centra el botón verticalmente sin afectar el fondo */
+}
+
+.btn-container button {
+  width: auto; /* 🔹 Mantiene el tamaño del botón sin expandirse */
+}
+
+@media (max-width: 768px) {
+  .col-voto, .col-pendiente { 
+    display: none; /* 🔥 Ocultamos columnas en móviles */
+  }
+}
