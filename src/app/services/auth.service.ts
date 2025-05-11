@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router'; // Asegúrate de importar Router
-import { browserLocalPersistence, getAuth, setPersistence, signInWithEmailAndPassword, } from 'firebase/auth';
+import {
+  browserLocalPersistence,
+  getAuth,
+  setPersistence,
+  signInWithEmailAndPassword,
+} from 'firebase/auth';
 
 @Injectable({
   providedIn: 'root',
@@ -19,12 +24,15 @@ export class AuthService {
   login(email: string, password: string) {
     const auth = getAuth();
 
-    return setPersistence(auth, browserLocalPersistence) // 🔥 Establece persistencia antes de iniciar sesión
+    return setPersistence(auth, browserLocalPersistence)
       .then(() => signInWithEmailAndPassword(auth, email, password))
       .then((userCredential) => {
         console.log(
           `✅ Usuario autenticado en Firebase: ${userCredential.user.email}`
         );
+
+        localStorage.setItem('user', JSON.stringify(userCredential.user)); // 🔥 Guarda sesión para móviles
+
         return userCredential.user;
       })
       .catch((error) => {
