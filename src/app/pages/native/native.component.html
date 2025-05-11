@@ -19,7 +19,7 @@
           <td class="col-votante">{{ elector.votante }}</td>
           <td class="col-voto"></td>
           <td class="col-pendiente">Pendiente</td>
-          <td class="col-accion btn-container"><button type="button" class="btn btn-success btn-centered">Votó!</button></td>
+          <td class="col-accion btn-container"><button type="button" class="btn btn-success" (click)="registrarVoto(elector.cedula)">Votó!</button></td>
         </tr>
       </tbody>
     </table>
